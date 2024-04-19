@@ -27,14 +27,14 @@ final router = GoRouter(
         );
       },
     ),
-    GoRoute(
-      path: '/movie',
-      builder: (context, state) {
-        final Movie movie = state.extra as Movie;
-        return MovieDetail(
-          movie: movie,
-        );
-      },
-    ),
+    // GoRoute(
+    //   path: '/movie',
+    //   builder: (context, state) {
+    //     final Movie movie = state.extra as Movie;
+    //     return MovieDetail(
+    //       movie: movie,
+    //     );
+    //   },
+    // ),
   ],
 );

@@ -9,7 +9,7 @@ extension MovieMapper on Results {
       title: originalTitle ?? '',
       genreIds: genreIds ?? [],
       overview: overview ?? '',
-      posterUrl: posterPath ?? ''
+      posterUrl: 'https://image.tmdb.org/t/p/w500/$posterPath' ?? ''
     );
   }
 }
