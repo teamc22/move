@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/movie_list_view_model.dart';
@@ -23,11 +24,12 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-       context.read<MovieListViewModel>().getMovie();
+      context.read<MovieListViewModel>().getMovie();
     });
 
     Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-      if (_currentIndex < context.read<MovieListViewModel>().state.movie.length) {
+      if (_currentIndex <
+          context.read<MovieListViewModel>().state.movie.length) {
         _currentIndex++;
       } else {
         _currentIndex = 0;
@@ -76,12 +78,10 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
           ),
-          const SizedBox(
-            height:20
-          ),
+          const SizedBox(height: 20),
           Expanded(
             child: GridView.count(
-              padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
                 crossAxisCount: 2,
@@ -89,7 +89,9 @@ class _MainScreenState extends State<MainScreen> {
                   return ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            context.push('/movie', extra: movie);
+                          },
                           child: Hero(
                             tag: movie.id,
                             child: Image.network(
