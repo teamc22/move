@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,14 +14,38 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
+  final PageController _pageController = PageController(
+    initialPage: 0,
+  );
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => context.read<MovieListViewModel>().getMovie() );
+    Future.microtask(() {
+       context.read<MovieListViewModel>().getMovie();
+    });
+
+    Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+      if (_currentIndex < context.read<MovieListViewModel>().state.movie.length) {
+        _currentIndex++;
+      } else {
+        _currentIndex = 0;
+      }
+
+      _pageController.animateToPage(
+        _currentIndex,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeIn,
+      );
+    });
   }
 
-  int _currentIndex = 0;
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +54,15 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Photo Slider'),
+        title: const Text('Photo Slider'),
       ),
       body: Column(
-
         children: [
-
           SizedBox(
             height: 270,
             child: PageView.builder(
-              itemCount: viewModel.state.movie.length,
+              controller: _pageController,
+              itemCount: state.movie.length,
               onPageChanged: (index) {
                 setState(() {
                   _currentIndex = index;
@@ -45,42 +71,34 @@ class _MainScreenState extends State<MainScreen> {
               itemBuilder: (context, index) {
                 return Image.network(
                   state.movie[index].posterUrl,
-                  // fit: BoxFit.cover,
+                  fit: BoxFit.cover,
                 );
               },
             ),
           ),
-          GridView.count(
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
-            children:state.movie
-                .map(
-                  (e) => GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                      //PhotoDetailScreen(photo: photo),
-                    ),
-                  );
-                },
-                child: Hero(
-                  //  tag: photo.id,
-                    tag: e.id,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        e.posterUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                ),
-              ),
-            ).toList(),
-          )
-
+          const SizedBox(
+            height:20
+          ),
+          Expanded(
+            child: GridView.count(
+              padding: const EdgeInsets.all(16),
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                crossAxisCount: 2,
+                children: state.movie.map((movie) {
+                  return ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: GestureDetector(
+                          onTap: () {},
+                          child: Hero(
+                            tag: movie.id,
+                            child: Image.network(
+                              movie.posterUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          )));
+                }).toList()),
+          ),
         ],
       ),
     );
