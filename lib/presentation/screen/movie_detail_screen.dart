@@ -46,7 +46,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
               height: 400,
-              child: Image.network(widget.movie.posterUrl),
+              child: Hero(
+                  tag: widget.movie.id,
+                  child: Image.network(widget.movie.posterUrl)),
             ),
           ),
           SingleChildScrollView(
