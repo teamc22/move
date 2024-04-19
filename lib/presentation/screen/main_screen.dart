@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../view_model/movie_list_view_model.dart';
+import 'shimmer_grid_view.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -58,51 +59,54 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('Photo Slider'),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 270,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: state.movie.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              itemBuilder: (context, index) {
-                return Image.network(
-                  state.movie[index].posterUrl,
-                  fit: BoxFit.cover,
-                );
-              },
+      body: viewModel.state.isLoading
+          ? const ShimmerGridView()
+          : Column(
+              children: [
+                SizedBox(
+                  height: 270,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: state.movie.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return Image.network(
+                        state.movie[index].posterUrl,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: GridView.count(
+                    padding: const EdgeInsets.all(16),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    crossAxisCount: 2,
+                    children: state.movie.map((movie) {
+                      return ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: GestureDetector(
+                              onTap: () {
+                                context.push('/movie', extra: movie);
+                              },
+                              child: Hero(
+                                tag: movie.id,
+                                child: Image.network(
+                                  movie.posterUrl,
+                                  fit: BoxFit.cover,
+                                ),
+                              )));
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: GridView.count(
-                padding: const EdgeInsets.all(16),
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                crossAxisCount: 2,
-                children: state.movie.map((movie) {
-                  return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: GestureDetector(
-                          onTap: () {
-                            context.push('/movie', extra: movie);
-                          },
-                          child: Hero(
-                            tag: movie.id,
-                            child: Image.network(
-                              movie.posterUrl,
-                              fit: BoxFit.cover,
-                            ),
-                          )));
-                }).toList()),
-          ),
-        ],
-      ),
     );
   }
 }

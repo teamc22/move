@@ -10,6 +10,7 @@ part 'movie_list_state.g.dart';
 class MovieListState with _$MovieListState {
   const factory MovieListState({
     @Default([]) List<Movie> movie,
+    @Default(false) bool isLoading,
   }) = _MovieListState;
 
   factory MovieListState.fromJson(Map<String, Object?> json) =>

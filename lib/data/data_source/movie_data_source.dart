@@ -10,13 +10,14 @@ class MovieDataSource {
   Future<MovieDto> getMovieDto() async {
     await dotenv.load(fileName: '.env');
     final apiKey = dotenv.get('API_KEY');
-    final url = 'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=ko-KR&page=1';
+    final url =
+        'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&language=ko-KR&page=1';
     final response = await _client.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
       throw Exception('통신에러 코드: ${response.statusCode}');
     }
-
+    await Future.delayed(Duration(seconds: 2));
     return MovieDto.fromJson(jsonDecode(response.body));
   }
 

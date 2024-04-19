@@ -15,9 +15,13 @@ class MovieListViewModel with ChangeNotifier {
   MovieListState get state => _state;
 
   void getMovie() async {
+    _state = _state.copyWith(isLoading: true);
+
+    notifyListeners();
+
     final movie = await getMovieUseCase.getMovieTool();
 
-    _state = _state.copyWith(movie: movie);
+    _state = _state.copyWith(movie: movie, isLoading: false);
 
     notifyListeners();
   }
