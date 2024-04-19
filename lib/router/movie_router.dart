@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:movie/domain/use_case/get_moive_use_case.dart';
+import 'package:movie/presentation/screen/movie_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../data/data_source/movie_data_source.dart';
@@ -27,14 +28,14 @@ final router = GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   path: '/movie',
-    //   builder: (context, state) {
-    //     final Movie movie = state.extra as Movie;
-    //     return MovieDetail(
-    //       movie: movie,
-    //     );
-    //   },
-    // ),
+    GoRoute(
+      path: '/movie',
+      builder: (context, state) {
+        final Movie movie = state.extra as Movie;
+        return MovieDetailScreen(
+          movie: movie,
+        );
+      },
+    ),
   ],
 );
