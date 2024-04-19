@@ -12,10 +12,12 @@ _$MovieListStateImpl _$$MovieListStateImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => Movie.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      isLoading: json['isLoading'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$MovieListStateImplToJson(
         _$MovieListStateImpl instance) =>
     <String, dynamic>{
       'movie': instance.movie,
+      'isLoading': instance.isLoading,
     };

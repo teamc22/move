@@ -21,6 +21,7 @@ MovieListState _$MovieListStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MovieListState {
   List<Movie> get movie => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,7 @@ abstract class $MovieListStateCopyWith<$Res> {
           MovieListState value, $Res Function(MovieListState) then) =
       _$MovieListStateCopyWithImpl<$Res, MovieListState>;
   @useResult
-  $Res call({List<Movie> movie});
+  $Res call({List<Movie> movie, bool isLoading});
 }
 
 /// @nodoc
@@ -51,12 +52,17 @@ class _$MovieListStateCopyWithImpl<$Res, $Val extends MovieListState>
   @override
   $Res call({
     Object? movie = null,
+    Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
       movie: null == movie
           ? _value.movie
           : movie // ignore: cast_nullable_to_non_nullable
               as List<Movie>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -69,7 +75,7 @@ abstract class _$$MovieListStateImplCopyWith<$Res>
       __$$MovieListStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Movie> movie});
+  $Res call({List<Movie> movie, bool isLoading});
 }
 
 /// @nodoc
@@ -84,12 +90,17 @@ class __$$MovieListStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? movie = null,
+    Object? isLoading = null,
   }) {
     return _then(_$MovieListStateImpl(
       movie: null == movie
           ? _value._movie
           : movie // ignore: cast_nullable_to_non_nullable
               as List<Movie>,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -97,7 +108,8 @@ class __$$MovieListStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MovieListStateImpl implements _MovieListState {
-  const _$MovieListStateImpl({final List<Movie> movie = const []})
+  const _$MovieListStateImpl(
+      {final List<Movie> movie = const [], this.isLoading = false})
       : _movie = movie;
 
   factory _$MovieListStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -113,8 +125,12 @@ class _$MovieListStateImpl implements _MovieListState {
   }
 
   @override
+  @JsonKey()
+  final bool isLoading;
+
+  @override
   String toString() {
-    return 'MovieListState(movie: $movie)';
+    return 'MovieListState(movie: $movie, isLoading: $isLoading)';
   }
 
   @override
@@ -122,13 +138,15 @@ class _$MovieListStateImpl implements _MovieListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MovieListStateImpl &&
-            const DeepCollectionEquality().equals(other._movie, _movie));
+            const DeepCollectionEquality().equals(other._movie, _movie) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_movie));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_movie), isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -146,14 +164,16 @@ class _$MovieListStateImpl implements _MovieListState {
 }
 
 abstract class _MovieListState implements MovieListState {
-  const factory _MovieListState({final List<Movie> movie}) =
-      _$MovieListStateImpl;
+  const factory _MovieListState(
+      {final List<Movie> movie, final bool isLoading}) = _$MovieListStateImpl;
 
   factory _MovieListState.fromJson(Map<String, dynamic> json) =
       _$MovieListStateImpl.fromJson;
 
   @override
   List<Movie> get movie;
+  @override
+  bool get isLoading;
   @override
   @JsonKey(ignore: true)
   _$$MovieListStateImplCopyWith<_$MovieListStateImpl> get copyWith =>
