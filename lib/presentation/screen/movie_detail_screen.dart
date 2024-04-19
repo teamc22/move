@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/movie.dart';
@@ -48,52 +49,57 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               child: Image.network(widget.movie.posterUrl),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...widget.movie.genreIds.map((e) => Text(genre[e]!)).toList(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  constraints: const BoxConstraints(minWidth: 50),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey,
-                  ),
-                  height: 35,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                    child: Row(
-                      children: widget.movie.genreIds
-                          .map((e) => Text(genre[e]!))
-                          .toList(),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ...widget.movie.genreIds
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            constraints: const BoxConstraints(minWidth: 50),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.grey,
+                            ),
+                            height: 35,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 8),
+                              child: Text(
+                                genre[e]!,
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    constraints: const BoxConstraints(minWidth: 50),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey,
+                    ),
+                    height: 35,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 8),
+                      child: Text(
+                        widget.movie.adult ? '성인' : '전체관람가',
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  constraints: const BoxConstraints(minWidth: 50),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey,
-                  ),
-                  height: 35,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                    child: Text(
-                      widget.movie.adult ? '성인' : '전체관람가',
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
